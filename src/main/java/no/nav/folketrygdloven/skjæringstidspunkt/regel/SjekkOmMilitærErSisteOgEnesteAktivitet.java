@@ -17,7 +17,7 @@ class SjekkOmMilitærErSisteOgEnesteAktivitet extends LeafSpecification<Aktivite
 
     static final String ID = "FP_BR 21.8";
     static final String BESKRIVELSE = "Er siste aktivitet før skjæringstidspunkt for opptjening, militær eller obligatorisk" +
-        " sivilforvarstjeneste og er dette brukers eneste aktivitet på dette tidspunktet og har bruker andre aktiviteter i opptjeningsperioden";
+        " sivilforvarstjeneste og er dette brukers eneste aktivitet på dette tidspunktet og har bruker andre aktiviteter i opptjeningsperioden?";
 
     SjekkOmMilitærErSisteOgEnesteAktivitet() {
         super(ID, BESKRIVELSE);

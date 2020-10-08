@@ -1,6 +1,6 @@
 package no.nav.folketrygdloven.beregningsgrunnlag.dok;
 
-import no.nav.folketrygdloven.beregningsgrunnlag.kombinasjon.RegelFastsetteBeregningsgrunnlagForKombinasjonATFLSN;
+import no.nav.folketrygdloven.beregningsgrunnlag.foreslå.kombinasjon.RegelFastsetteBeregningsgrunnlagForKombinasjonATFLSN;
 import no.nav.fpsak.nare.doc.RuleDocumentation;
 
 /**

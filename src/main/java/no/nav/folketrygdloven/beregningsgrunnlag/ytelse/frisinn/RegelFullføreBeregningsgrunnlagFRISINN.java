@@ -1,7 +1,7 @@
 package no.nav.folketrygdloven.beregningsgrunnlag.ytelse.frisinn;
 
 import no.nav.folketrygdloven.beregningsgrunnlag.fastsette.FastsettIkkeSøktForTil0;
-import no.nav.folketrygdloven.beregningsgrunnlag.reduksjon.ReduserBeregningsgrunnlag;
+import no.nav.folketrygdloven.beregningsgrunnlag.fastsette.reduksjon.ReduserBeregningsgrunnlag;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.BeregningsgrunnlagPeriode;
 import no.nav.fpsak.nare.DynamicRuleService;
 import no.nav.fpsak.nare.Ruleset;

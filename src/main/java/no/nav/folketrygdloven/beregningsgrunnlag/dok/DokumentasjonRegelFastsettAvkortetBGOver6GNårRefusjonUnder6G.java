@@ -1,6 +1,6 @@
 package no.nav.folketrygdloven.beregningsgrunnlag.dok;
 
-import no.nav.folketrygdloven.beregningsgrunnlag.avkorting.RegelFastsettAvkortetBGOver6GNårRefusjonUnder6G;
+import no.nav.folketrygdloven.beregningsgrunnlag.fastsette.avkorting.RegelFastsettAvkortetBGOver6GNårRefusjonUnder6G;
 import no.nav.fpsak.nare.doc.RuleDocumentation;
 
 /**

@@ -1,11 +1,13 @@
 package no.nav.folketrygdloven.beregningsgrunnlag.fastsette;
 
+import java.util.List;
+
 import no.nav.folketrygdloven.beregningsgrunnlag.arbeidstaker.RegelFastsettUtenAvkortingATFL;
-import no.nav.folketrygdloven.beregningsgrunnlag.reduksjon.ReduserBeregningsgrunnlag;
-import no.nav.folketrygdloven.beregningsgrunnlag.avkorting.RegelFastsettAvkortetBGOver6GNårRefusjonUnder6G;
+import no.nav.folketrygdloven.beregningsgrunnlag.fastsette.avkorting.RegelFastsettAvkortetBGOver6GNårRefusjonUnder6G;
 import no.nav.folketrygdloven.beregningsgrunnlag.fastsette.refusjon.FastsettMaksimalRefusjon;
 import no.nav.folketrygdloven.beregningsgrunnlag.fastsette.refusjon.over6g.RegelFastsettAvkortetVedRefusjonOver6G;
-import no.nav.folketrygdloven.beregningsgrunnlag.reduksjon.FastsettDagsatsPrAndel;
+import no.nav.folketrygdloven.beregningsgrunnlag.fastsette.reduksjon.FastsettDagsatsPrAndel;
+import no.nav.folketrygdloven.beregningsgrunnlag.fastsette.reduksjon.ReduserBeregningsgrunnlag;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.BeregningsgrunnlagPeriode;
 import no.nav.fpsak.nare.DynamicRuleService;
 import no.nav.fpsak.nare.Ruleset;
@@ -60,7 +62,7 @@ public class RegelFullføreBeregningsgrunnlag extends DynamicRuleService<Beregni
 
         // FP_BR_29.3 3. For hver beregningsgrunnlagsandel: Fastsett Refusjonskrav for beregnings-grunnlagsandel
         Specification<BeregningsgrunnlagPeriode> fastsettBeregningsgrunnlag = rs.beregningsRegel(FastsettIkkeSøktForTil0.ID, FastsettIkkeSøktForTil0.BESKRIVELSE,
-            new FastsettIkkeSøktForTil0(), fastsettMaksimalRefusjon);
+            List.of(new FastsettIkkeSøktForTil0(), new FastsettMaksimalRefusjon()), beregnEventuellAvkorting);
 
         return fastsettBeregningsgrunnlag;
     }

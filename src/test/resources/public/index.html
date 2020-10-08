@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+
+   <title>NARE</title>
+
+   <style>
+
+
+      .node circle {
+         fill: #fff;
+         stroke: steelblue;
+         stroke-width: 3px;
+      }
+
+      .node text { font: 12px sans-serif; }
+
+
+      .nodeYes {
+         fill: #5CC763;
+         stroke: #419B42;
+         stroke-width: 3px;
+      }
+
+      .nodeNo {
+         fill: #c75cb2;
+         stroke: #994085;
+         stroke-width: 3px;
+      }
+
+      .nodeMaybe {
+         fill: #C7C35C;
+         stroke: #9B9841;
+         stroke-width: 3px;
+      }
+
+      .linkYes {
+         fill: none;
+         stroke: #419B42;
+         stroke-width: 3px;
+      }
+
+      .link {
+          fill: none;
+          stroke: #419B42;
+          stroke-width: 3px;
+      }
+
+      .linkIf {
+          fill: none;
+          stroke: #9b9241;
+          stroke-width: 5px;
+      }
+
+      .linkNo {
+         fill: none;
+         stroke: #994085;
+         stroke-width: 3px;
+      }
+
+      .linkMaybe {
+         fill: none;
+         stroke: #9B9841;
+         stroke-width: 3px;
+      }
+      .d3-tip {
+         font: 12px sans-serif;
+         line-height: 1;
+         font-weight: bold;
+         max-width:150px;
+         word-wrap: normal;
+         padding: 12px;
+         background: rgba(0, 0, 0, 0.7);
+         color: #fff;
+         border-radius: 5px;
+      }
+
+      /* Creates a small triangle extender for the tooltip */
+      .d3-tip:after {
+         box-sizing: border-box;
+         display: inline;
+         font-size: 10px;
+         width: 100%;
+         line-height: 1;
+         color: rgba(0, 0, 0, 0.8);
+         content: "\25BC";
+         position: absolute;
+         text-align: center;
+      }
+
+      /* Style northward tooltips differently */
+      .d3-tip.n:after {
+         margin: -1px 0 0 0;
+         top: 100%;
+         left: 0;
+      }
+
+   </style>
+
+</head>
+
+<body>
+
+<!-- load the d3.js library -->
+<script src="d3/d3.v3.min.js"></script>
+<script src="d3/d3.tip.v0.6.3.js"></script>
+<script src="d3/d3plus.min.js"></script>
+<script type="text/javascript" src="tree.js"></script>
+
+</body>
+</html>

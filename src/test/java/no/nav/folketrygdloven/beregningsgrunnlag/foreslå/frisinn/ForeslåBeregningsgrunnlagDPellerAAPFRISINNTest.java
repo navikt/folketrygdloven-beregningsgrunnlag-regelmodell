@@ -1,7 +1,6 @@
 package no.nav.folketrygdloven.beregningsgrunnlag.foreslå.frisinn;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

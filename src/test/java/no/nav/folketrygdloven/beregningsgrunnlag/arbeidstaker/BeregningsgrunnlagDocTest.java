@@ -2,7 +2,7 @@ package no.nav.folketrygdloven.beregningsgrunnlag.arbeidstaker;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.folketrygdloven.beregningsgrunnlag.avkorting.RegelFastsettUtbetalingsbeløpTilBruker;
+import no.nav.folketrygdloven.beregningsgrunnlag.fastsette.avkorting.RegelFastsettUtbetalingsbeløpTilBruker;
 import no.nav.folketrygdloven.beregningsgrunnlag.dok.DokumentasjonRegelBeregnBruttoPrArbeidsforhold;
 import no.nav.folketrygdloven.beregningsgrunnlag.dok.DokumentasjonRegelBeregningsgrunnlagATFL;
 import no.nav.folketrygdloven.beregningsgrunnlag.dok.DokumentasjonRegelFastsettAvkortetBGOver6GNårRefusjonUnder6G;
@@ -12,7 +12,7 @@ import no.nav.folketrygdloven.beregningsgrunnlag.dok.DokumentasjonRegelForeslåB
 import no.nav.folketrygdloven.beregningsgrunnlag.dok.DokumentasjonRegelFullføreBeregningsgrunnlag;
 import no.nav.folketrygdloven.beregningsgrunnlag.fastsette.refusjon.over6g.RegelBeregnRefusjonPrArbeidsforhold;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.BeregningsgrunnlagPeriode;
-import no.nav.folketrygdloven.beregningsgrunnlag.ytelse.dagpengerelleraap.RegelFastsettBeregningsgrunnlagDPellerAAP;
+import no.nav.folketrygdloven.beregningsgrunnlag.foreslå.dagpengerelleraap.RegelFastsettBeregningsgrunnlagDPellerAAP;
 import no.nav.fpsak.nare.doc.RuleDescriptionDigraph;
 import no.nav.fpsak.nare.specification.Specification;
 

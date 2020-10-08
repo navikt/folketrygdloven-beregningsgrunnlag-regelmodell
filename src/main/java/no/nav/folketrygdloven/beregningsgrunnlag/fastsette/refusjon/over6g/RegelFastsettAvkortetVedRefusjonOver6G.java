@@ -6,6 +6,7 @@ import java.util.List;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.AktivitetStatus;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.Beregnet;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.BeregningsgrunnlagPeriode;
+import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.BeregningsgrunnlagPrArbeidsforhold;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.BeregningsgrunnlagPrStatus;
 import no.nav.fpsak.nare.RuleService;
 import no.nav.fpsak.nare.Ruleset;
@@ -33,21 +34,15 @@ public class RegelFastsettAvkortetVedRefusjonOver6G implements RuleService<Bereg
         Ruleset<BeregningsgrunnlagPeriode> rs = new Ruleset<>();
 
         Specification<BeregningsgrunnlagPeriode> fastsettBrukersAndelerTilNull = new FastsettBrukersAndelerTilNull();
-
-        int antallKjøringer = bgpsa.getArbeidsforholdSomSkalBrukes().size();
         Specification<BeregningsgrunnlagPeriode> fastsettAvkortetBeregningsgrunnlag = new Beregnet();
-        if (antallKjøringer > 0) {
-            List<Specification<BeregningsgrunnlagPeriode>> prArbeidsforhold = new ArrayList<>();
-            for (int nr = 1; nr <= antallKjøringer; nr++) {
-                prArbeidsforhold.add(opprettRegelBeregnRefusjonPrArbeidsforhold());
-            }
-            fastsettAvkortetBeregningsgrunnlag = rs.beregningsRegel(ID, BESKRIVELSE, prArbeidsforhold, fastsettBrukersAndelerTilNull);
+
+        List<BeregningsgrunnlagPrArbeidsforhold> prArbeidsforhold = new ArrayList<>(bgpsa.getArbeidsforholdSomSkalBrukes());
+
+        if (!prArbeidsforhold.isEmpty()) {
+            fastsettAvkortetBeregningsgrunnlag = rs.beregningsRegel(ID, BESKRIVELSE, RegelBeregnRefusjonPrArbeidsforhold.class,
+                    regelmodell, "prArbeidsforhold", prArbeidsforhold, fastsettBrukersAndelerTilNull);
         }
 
         return fastsettAvkortetBeregningsgrunnlag;
-    }
-
-    private Specification<BeregningsgrunnlagPeriode> opprettRegelBeregnRefusjonPrArbeidsforhold() {
-        return new RegelBeregnRefusjonPrArbeidsforhold().getSpecification();
     }
 }

@@ -54,7 +54,6 @@ public class RegelFastsettSkjæringstidspunktTest {
     public void skalBeregneSkjæringstidspunktLikSøndagNårEnAktivitetSlutterFredagOgSkjæringstidspunktOpptjeningErPåSøndagIkkeForeldrepenger() {
         // Arrange
         LocalDate søndag = LocalDate.of(2019, 10, 6);
-        LocalDate lørdag = LocalDate.of(2019, 10, 5);
         LocalDate fredag = LocalDate.of(2019, 10, 4);
         AktivPeriode aktivPeriode = AktivPeriode.forArbeidstakerHosVirksomhet(Periode.of(søndag.minusMonths(5), søndag.plusMonths(2)), ARBEIDSFORHOLD, null);
         AktivPeriode aktivPeriode2 = AktivPeriode.forArbeidstakerHosVirksomhet(Periode.of(søndag.minusMonths(5), fredag), ARBEIDSFORHOLD2, null);
@@ -97,7 +96,6 @@ public class RegelFastsettSkjæringstidspunktTest {
         // Arrange
         LocalDate mandag = LocalDate.of(2019, 10, 7);
         LocalDate lørdag = LocalDate.of(2019, 10, 5);
-        LocalDate søndag = LocalDate.of(2019, 10, 6);
         AktivPeriode aktivPeriode = AktivPeriode.forArbeidstakerHosVirksomhet(Periode.of(mandag.minusMonths(5), mandag.plusMonths(2)), ARBEIDSFORHOLD, null);
         AktivPeriode aktivPeriode2 = AktivPeriode.forArbeidstakerHosVirksomhet(Periode.of(mandag.minusMonths(5), lørdag), ARBEIDSFORHOLD2, null);
         regelmodell = new AktivitetStatusModell();

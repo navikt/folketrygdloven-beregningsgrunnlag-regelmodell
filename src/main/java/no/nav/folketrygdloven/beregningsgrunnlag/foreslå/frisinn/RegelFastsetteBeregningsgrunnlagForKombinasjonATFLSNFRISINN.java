@@ -6,8 +6,6 @@ import no.nav.fpsak.nare.DynamicRuleService;
 import no.nav.fpsak.nare.Ruleset;
 import no.nav.fpsak.nare.specification.Specification;
 
-import java.util.Arrays;
-
 public class RegelFastsetteBeregningsgrunnlagForKombinasjonATFLSNFRISINN extends DynamicRuleService<BeregningsgrunnlagPeriode> {
 
     public static final String ID = "FRISINN 2.8";
