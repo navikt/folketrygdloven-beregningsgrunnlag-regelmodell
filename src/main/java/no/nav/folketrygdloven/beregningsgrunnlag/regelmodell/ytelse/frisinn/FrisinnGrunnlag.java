@@ -1,13 +1,14 @@
 package no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.ytelse.frisinn;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.AktivitetStatus;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.Periode;
+import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.BeregningsgrunnlagPeriode;
+import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.BeregningsgrunnlagPrArbeidsforhold;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.ytelse.YtelsesSpesifiktGrunnlag;
 
 public class FrisinnGrunnlag extends YtelsesSpesifiktGrunnlag {
@@ -62,4 +63,8 @@ public class FrisinnGrunnlag extends YtelsesSpesifiktGrunnlag {
         return frisinnPerioder.stream().anyMatch(FrisinnPeriode::getSøkerYtelseNæring);
     }
 
+    @Override
+    public BigDecimal finnAndelAvBeregnet(BigDecimal beregnetPrÅr, BeregningsgrunnlagPrArbeidsforhold arbeidsforhold, BeregningsgrunnlagPeriode periode) {
+        return beregnetPrÅr;
+    }
 }
