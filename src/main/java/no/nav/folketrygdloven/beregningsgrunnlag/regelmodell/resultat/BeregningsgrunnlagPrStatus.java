@@ -460,8 +460,8 @@ public class BeregningsgrunnlagPrStatus {
             return this;
         }
 
-        public Builder medUtbetalingsprosentSVP(BigDecimal utbetalingsprosentSVP){
-            beregningsgrunnlagPrStatusMal.utbetalingsprosent = utbetalingsprosentSVP;
+        public Builder medUtbetalingsprosent(BigDecimal utbetalingsprosent){
+            beregningsgrunnlagPrStatusMal.utbetalingsprosent = utbetalingsprosent;
             return this;
         }
 

@@ -28,7 +28,7 @@ public class FinnGrenseverdi extends LeafSpecification<BeregningsgrunnlagPeriode
         for (BeregningsgrunnlagPrStatus bps : grunnlag.getBeregningsgrunnlagPrStatusSomSkalBrukes()) {
             if (bps.erArbeidstakerEllerFrilanser()) {
                 sumAvkortetSkalBrukes = sumAvkortetSkalBrukes.add(bps.getArbeidsforholdSomSkalBrukes().stream()
-                    .map(arb -> arb.getAndelsmessigFørGraderingPrAar().multiply(arb.getUtbetalingsprosentSVP().scaleByPowerOfTen(-2)))
+                    .map(arb -> arb.getAndelsmessigFørGraderingPrAar().multiply(arb.getUtbetalingsprosent().scaleByPowerOfTen(-2)))
                     .reduce(BigDecimal::add).orElse(BigDecimal.ZERO));
             } else {
                 sumAvkortetSkalBrukes = sumAvkortetSkalBrukes.add(bps.getAndelsmessigFørGraderingPrAar().multiply(bps.getUtbetalingsprosent().scaleByPowerOfTen(-2)));

@@ -708,7 +708,7 @@ public class RegelFullføreBeregningsgrunnlagTest {
             .builder()
             .medAktivitetStatus(AktivitetStatus.SN)
             .medBeregnetPrÅr(BigDecimal.valueOf(brutto))
-            .medUtbetalingsprosentSVP(BigDecimal.valueOf(utbetaingsgrad))
+            .medUtbetalingsprosent(BigDecimal.valueOf(utbetaingsgrad))
             .medAndelNr(andelsnr)
             .build();
         andel.setErSøktYtelseFor( utbetaingsgrad != 0);
@@ -776,7 +776,7 @@ public class RegelFullføreBeregningsgrunnlagTest {
             .medArbeidsforhold(arbeidsforhold)
             .medBeregnetPrÅr(BigDecimal.valueOf(beregnetPrÅr))
             .medGjeldendeRefusjonPrÅr(BigDecimal.valueOf(refusjonskrav))
-            .medUtbetalingsprosentSVP(BigDecimal.valueOf(utbetalingsgrad))
+            .medUtbetalingsprosent(BigDecimal.valueOf(utbetalingsgrad))
             .build();
         arb.setErSøktYtelseFor(utbetalingsgrad > 0);
         return arb;

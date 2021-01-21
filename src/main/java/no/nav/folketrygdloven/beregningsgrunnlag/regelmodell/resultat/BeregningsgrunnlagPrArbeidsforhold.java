@@ -45,7 +45,7 @@ public class BeregningsgrunnlagPrArbeidsforhold {
     private Inntektskategori inntektskategori;
     private List<Periode> arbeidsgiverperioder = new ArrayList<>(); //Brukes i beregning for sykepenger
     private Boolean erSøktYtelseFor;
-    private BigDecimal utbetalingsprosentSVP = BigDecimal.valueOf(100);
+    private BigDecimal utbetalingsprosent = BigDecimal.valueOf(100);
     private BigDecimal andelsmessigFørGraderingPrAar;
 
     public BeregningsgrunnlagPrArbeidsforhold() {
@@ -226,12 +226,12 @@ public class BeregningsgrunnlagPrArbeidsforhold {
         return Collections.unmodifiableList(arbeidsgiverperioder);
     }
 
-    public BigDecimal getUtbetalingsprosentSVP() {
-        return utbetalingsprosentSVP;
+    public BigDecimal getUtbetalingsprosent() {
+        return utbetalingsprosent;
     }
 
     public boolean getErSøktYtelseFor() {
-        return erSøktYtelseFor != null ? erSøktYtelseFor : utbetalingsprosentSVP.compareTo(BigDecimal.ZERO) > 0;
+        return erSøktYtelseFor != null ? erSøktYtelseFor : utbetalingsprosent.compareTo(BigDecimal.ZERO) > 0;
     }
 
     public void setErSøktYtelseFor(boolean erSøktYtelseFor) {
@@ -248,7 +248,7 @@ public class BeregningsgrunnlagPrArbeidsforhold {
     }
 
     private BigDecimal finnGradert(BigDecimal verdi) {
-        return verdi == null ? null : verdi.multiply(utbetalingsprosentSVP.scaleByPowerOfTen(-2));
+        return verdi == null ? null : verdi.multiply(utbetalingsprosent.scaleByPowerOfTen(-2));
     }
 
     public static Builder builder() {
@@ -400,8 +400,8 @@ public class BeregningsgrunnlagPrArbeidsforhold {
             return this;
         }
 
-        public Builder medUtbetalingsprosentSVP(BigDecimal utbetalingsprosentSVP) {
-            mal.utbetalingsprosentSVP = utbetalingsprosentSVP;
+        public Builder medUtbetalingsprosent(BigDecimal utbetalingsprosent) {
+            mal.utbetalingsprosent = utbetalingsprosent;
             return this;
         }
 

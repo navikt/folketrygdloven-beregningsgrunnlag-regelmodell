@@ -268,7 +268,7 @@ class FinnGrenseverdiForTotalOver6GTest {
             periodeBuilder.medBeregningsgrunnlagPrStatus(BeregningsgrunnlagPrStatus.builder()
                 .medAktivitetStatus(AktivitetStatus.SN)
                 .medAndelNr(1L)
-                .medUtbetalingsprosentSVP(BigDecimal.valueOf(utbetalingsgrad))
+                .medUtbetalingsprosent(BigDecimal.valueOf(utbetalingsgrad))
                 .medBeregnetPrÅr(BigDecimal.valueOf(snInntektPrÅr))
                 .build());
         }
@@ -283,7 +283,7 @@ class FinnGrenseverdiForTotalOver6GTest {
                     .medArbeidsforhold(Arbeidsforhold.frilansArbeidsforhold())
                     .medBeregnetPrÅr(BigDecimal.valueOf(frilansInntektPrÅr))
                     .medAndelNr(2L)
-                    .medUtbetalingsprosentSVP(BigDecimal.valueOf(flUtbetalingsgrad))
+                    .medUtbetalingsprosent(BigDecimal.valueOf(flUtbetalingsgrad))
                     .build();
                 flAndel.setErSøktYtelseFor(flUtbetalingsgrad != null);
                 atflStatusBuilder.medArbeidsforhold(flAndel);
