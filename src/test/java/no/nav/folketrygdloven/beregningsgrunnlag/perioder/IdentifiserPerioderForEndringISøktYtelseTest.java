@@ -38,7 +38,7 @@ public class IdentifiserPerioderForEndringISøktYtelseTest {
             .build();
 
         // Act
-        Set<PeriodeSplittData> periodesplitter = IdentifiserPerioderForEndringISøktYtelseSvangerskapspenger.identifiser(andelGradering);
+        Set<PeriodeSplittData> periodesplitter = IdentifiserPerioderForEndringIUtbetalingsgrad.identifiser(andelGradering);
 
         // Assert
         assertThat(periodesplitter).hasSize(4);
@@ -73,7 +73,7 @@ public class IdentifiserPerioderForEndringISøktYtelseTest {
             .build();
 
         // Act
-        Set<PeriodeSplittData> periodesplitter = IdentifiserPerioderForEndringISøktYtelseSvangerskapspenger.identifiser(andelGradering);
+        Set<PeriodeSplittData> periodesplitter = IdentifiserPerioderForEndringIUtbetalingsgrad.identifiser(andelGradering);
 
         // Assert
         assertThat(periodesplitter).hasSize(2);
@@ -106,7 +106,7 @@ public class IdentifiserPerioderForEndringISøktYtelseTest {
             .build();
 
         // Act
-        Set<PeriodeSplittData> periodesplitter = IdentifiserPerioderForEndringISøktYtelseSvangerskapspenger.identifiser(andelGradering);
+        Set<PeriodeSplittData> periodesplitter = IdentifiserPerioderForEndringIUtbetalingsgrad.identifiser(andelGradering);
 
         // Assert
         assertThat(periodesplitter).hasSize(3);
@@ -142,7 +142,7 @@ public class IdentifiserPerioderForEndringISøktYtelseTest {
             .build();
 
         // Act
-        Set<PeriodeSplittData> periodesplitter = IdentifiserPerioderForEndringISøktYtelseSvangerskapspenger.identifiser(andelGradering);
+        Set<PeriodeSplittData> periodesplitter = IdentifiserPerioderForEndringIUtbetalingsgrad.identifiser(andelGradering);
 
         // Assert
         assertThat(periodesplitter).hasSize(2);
@@ -181,7 +181,7 @@ public class IdentifiserPerioderForEndringISøktYtelseTest {
             .build();
 
         // Act
-        Set<PeriodeSplittData> periodesplitter = IdentifiserPerioderForEndringISøktYtelseSvangerskapspenger.identifiser(andelGradering);
+        Set<PeriodeSplittData> periodesplitter = IdentifiserPerioderForEndringIUtbetalingsgrad.identifiser(andelGradering);
 
         // Assert
         assertThat(periodesplitter).hasSize(5);

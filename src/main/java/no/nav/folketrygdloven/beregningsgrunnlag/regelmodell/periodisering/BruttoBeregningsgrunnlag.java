@@ -10,16 +10,21 @@ public class BruttoBeregningsgrunnlag {
     private AktivitetStatusV2 aktivitetStatus;
     private Arbeidsforhold arbeidsforhold;
     private BigDecimal bruttoPrÅr;
+    private BigDecimal refusjonPrÅr;
 
     private BruttoBeregningsgrunnlag() {
         // skjul default
     }
 
     public BigDecimal getBruttoPrÅr() {
-        return bruttoPrÅr;
+        return bruttoPrÅr == null ? BigDecimal.ZERO : bruttoPrÅr;
     }
 
-    public AktivitetStatusV2 getAktivitetStatus() {
+	public BigDecimal getRefusjonPrÅr() {
+		return refusjonPrÅr == null ? BigDecimal.ZERO : refusjonPrÅr;
+	}
+
+	public AktivitetStatusV2 getAktivitetStatus() {
         return aktivitetStatus;
     }
 
@@ -53,9 +58,13 @@ public class BruttoBeregningsgrunnlag {
             return this;
         }
 
+	    public Builder medRefusjonPrÅr(BigDecimal refusjonPrÅr) {
+		    kladd.refusjonPrÅr = refusjonPrÅr;
+		    return this;
+	    }
+
         public BruttoBeregningsgrunnlag build() {
             Objects.requireNonNull(kladd.getAktivitetStatus(), "aktivitetStatus");
-            Objects.requireNonNull(kladd.bruttoPrÅr);
             return kladd;
         }
     }

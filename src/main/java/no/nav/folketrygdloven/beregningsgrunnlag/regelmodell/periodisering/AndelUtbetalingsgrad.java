@@ -5,21 +5,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.Gradering;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.grunnlag.inntekt.Arbeidsforhold;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.grunnlag.inntekt.Refusjonskrav;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.SplittetAndel;
-import no.nav.fpsak.tidsserie.LocalDateSegment;
 
-public class AndelGraderingImpl implements AndelEndring {
+public class AndelUtbetalingsgrad implements AndelEndring {
     private AktivitetStatusV2 aktivitetStatus;
     private List<Gradering> graderinger = new ArrayList<>();
     private Arbeidsforhold arbeidsforhold;
     private Long andelsnr;
 
-    private AndelGraderingImpl() {
+    private AndelUtbetalingsgrad() {
     }
 
 	@Override
@@ -27,7 +25,7 @@ public class AndelGraderingImpl implements AndelEndring {
 		return false;
 	}
 
-	@Override
+    @Override
     public AktivitetStatusV2 getAktivitetStatus() {
         return aktivitetStatus;
     }
@@ -39,23 +37,8 @@ public class AndelGraderingImpl implements AndelEndring {
 
     @Override
     public boolean erNyAktivitet(PeriodeModell input, LocalDate periodeFom) {
-	    var manglerAndelIPeriode = input.getPeriodisertBruttoBeregningsgrunnlagList().stream()
-			    .filter(p -> p.getPeriode().inneholder(periodeFom))
-			    .findFirst()
-			    .map(p -> p.getBruttoBeregningsgrunnlag().stream().noneMatch(andel -> matcherGraderingOgAndel(this, andel)))
-			    .orElse(true);
-
-        return andelsnr == null || manglerAndelIPeriode;
+        return andelsnr == null;
     }
-
-	private static boolean matcherGraderingOgAndel(AndelEndring andelGradering, BruttoBeregningsgrunnlag andel) {
-		return andel.getAktivitetStatus().equals(andelGradering.getAktivitetStatus()) &&
-				(andelGradering.getArbeidsforhold() == null ||
-						andel.getArbeidsforhold().map(arbeidsforhold -> arbeidsforhold.getArbeidsgiverId().equals(andelGradering.getArbeidsforhold().getArbeidsgiverId())
-								&& (arbeidsforhold.getArbeidsforholdId() == null
-								|| andelGradering.getArbeidsforhold().getArbeidsforholdId() == null
-								|| arbeidsforhold.getArbeidsforholdId().equals(andelGradering.getArbeidsforhold().getArbeidsforholdId()))).orElse(true));
-	}
 
     @Override
     public List<Refusjonskrav> getGyldigeRefusjonskrav() {
@@ -69,14 +52,12 @@ public class AndelGraderingImpl implements AndelEndring {
 
 	@Override
 	public boolean filterForNyeAktiviteter(LocalDate skjæringstidspunkt, LocalDate periodeFom) {
-		return harGraderingFørPeriode(periodeFom);
+		return harUtbetalingIPeriode(periodeFom);
 	}
 
-	private boolean harGraderingFørPeriode(LocalDate periodeFom) {
-		return getGraderinger().stream()
-				.anyMatch(gradering -> !gradering.getPeriode().getFom().isAfter(periodeFom));
+	private boolean harUtbetalingIPeriode(LocalDate periodeFom) {
+		return getGraderinger().stream().anyMatch(g -> g.getPeriode().inneholder(periodeFom) && g.getUtbetalingsprosent().compareTo(BigDecimal.ZERO) > 0);
 	}
-
 	@Override
 	public EksisterendeAndel mapForEksisterendeAktiviteter(LocalDate fom) {
 		return EksisterendeAndel.builder()
@@ -103,10 +84,10 @@ public class AndelGraderingImpl implements AndelEndring {
     }
 
     public static class Builder {
-        private final AndelGraderingImpl kladd;
+        private final AndelUtbetalingsgrad kladd;
 
         private Builder() {
-            kladd = new AndelGraderingImpl();
+            kladd = new AndelUtbetalingsgrad();
         }
 
         public Builder medAktivitetStatus(AktivitetStatusV2 aktivitetStatus) {
@@ -126,13 +107,10 @@ public class AndelGraderingImpl implements AndelEndring {
 
         public Builder medArbeidsforhold(Arbeidsforhold arbeidsforhold) {
             kladd.arbeidsforhold = arbeidsforhold;
-            if (arbeidsforhold != null) {
-            	medAktivitetStatus(AktivitetStatusV2.AT);
-            }
             return this;
         }
 
-        public AndelGraderingImpl build() {
+        public AndelUtbetalingsgrad build() {
             return kladd;
         }
     }

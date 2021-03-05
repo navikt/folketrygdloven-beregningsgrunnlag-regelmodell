@@ -2,7 +2,7 @@ package no.nav.folketrygdloven.beregningsgrunnlag.perioder;
 
 import java.math.BigDecimal;
 
-import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.AndelGradering;
+import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.AndelEndring;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.BruttoBeregningsgrunnlag;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.PeriodisertBruttoBeregningsgrunnlag;
 
@@ -16,7 +16,7 @@ class ErHøyerePrioriterteAndelerBruttoMinst6G {
 
     static boolean vurder(BigDecimal grunnbeløp,
                           PeriodisertBruttoBeregningsgrunnlag periodisertBruttoBeregningsgrunnlag,
-                          AndelGradering andelGradering) {
+                          AndelEndring andelGradering) {
         int avkortingPrioritet = andelGradering.getAktivitetStatus().getAvkortingPrioritet();
         BigDecimal prioritertBg = periodisertBruttoBeregningsgrunnlag.getBruttoBeregningsgrunnlag().stream()
             .filter(a -> a.getAktivitetStatus().getAvkortingPrioritet() < avkortingPrioritet)

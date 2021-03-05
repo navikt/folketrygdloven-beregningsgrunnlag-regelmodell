@@ -16,7 +16,7 @@ import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.grunnlag.inntekt.Ar
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.AktivitetStatusV2;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.AndelGraderingImpl;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.BruttoBeregningsgrunnlag;
-import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.PeriodeModell;
+import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.PeriodeModellGradering;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.PeriodisertBruttoBeregningsgrunnlag;
 import no.nav.folketrygdloven.beregningsgrunnlag.util.DateUtil;
 
@@ -48,7 +48,7 @@ public class IdentifiserPeriodeDerBruttoBgPåHøyerePrioriterteAndelerErMinst6GT
             .medAktivitetStatus(AktivitetStatusV2.SN)
             .medGraderinger(List.of(gradering))
             .build();
-        PeriodeModell input = PeriodeModell.builder()
+        PeriodeModellGradering input = PeriodeModellGradering.builder()
             .medPeriodisertBruttoBeregningsgrunnlag(List.of(periodertBg))
             .medAndelGraderinger(List.of(andelGradering))
             .medGrunnbeløp(GRUNNBELØP)
@@ -98,7 +98,7 @@ public class IdentifiserPeriodeDerBruttoBgPåHøyerePrioriterteAndelerErMinst6GT
             .medAktivitetStatus(AktivitetStatusV2.SN)
             .medGraderinger(List.of(gradering))
             .build();
-        PeriodeModell input = PeriodeModell.builder()
+	    PeriodeModellGradering input = PeriodeModellGradering.builder()
             .medPeriodisertBruttoBeregningsgrunnlag(List.of(bgp1, bgp2))
             .medAndelGraderinger(List.of(andelGradering))
             .medGrunnbeløp(GRUNNBELØP)
@@ -148,7 +148,7 @@ public class IdentifiserPeriodeDerBruttoBgPåHøyerePrioriterteAndelerErMinst6GT
             .medAktivitetStatus(AktivitetStatusV2.SN)
             .medGraderinger(List.of(gradering))
             .build();
-        PeriodeModell input = PeriodeModell.builder()
+	    PeriodeModellGradering input = PeriodeModellGradering.builder()
             .medPeriodisertBruttoBeregningsgrunnlag(List.of(bgp1, bgp2))
             .medAndelGraderinger(List.of(andelGradering))
             .medGrunnbeløp(GRUNNBELØP)

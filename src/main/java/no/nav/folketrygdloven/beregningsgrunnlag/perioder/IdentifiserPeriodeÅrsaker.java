@@ -10,6 +10,9 @@ import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.PeriodeÅrsak;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.grunnlag.inntekt.Refusjonskrav;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.ArbeidsforholdOgInntektsmelding;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.PeriodeModell;
+import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.PeriodeModellGradering;
+import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.PeriodeModellRefusjonOgNaturalytelse;
+import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.PeriodeModellUtbetalingsgrad;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.PeriodeSplittProsesstruktur;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.IdentifisertePeriodeÅrsaker;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.PeriodeSplittData;
@@ -43,42 +46,44 @@ public class IdentifiserPeriodeÅrsaker extends LeafSpecification<PeriodeSplittP
         IdentifisertePeriodeÅrsaker map = new IdentifisertePeriodeÅrsaker();
         leggTilPeriodesplitterForEksisterendePerioder(input, map);
         resultater.put("eksisterendePerioder", map.getPeriodeMap());
-        input.getArbeidsforholdOgInntektsmeldinger().forEach(inntektsmelding -> {
-            resultater.put("refusjonForArbeidsforhold", inntektsmelding.getArbeidsforhold());
-            Set<PeriodeSplittData> refusjonPerioder = IdentifiserPerioderForRefusjon.identifiserPerioderForRefusjon(inntektsmelding, resultater);
-            refusjonPerioder.forEach(map::leggTilPeriodeÅrsak);
-        });
 
-        Map<ArbeidsforholdOgInntektsmelding, List<Refusjonskrav>> refusjonskravPrArbeidsgiver = GrupperPeriodeÅrsakerPerArbeidsgiver.grupper(map.getPeriodeMap());
-        input.getArbeidsforholdOgInntektsmeldinger().forEach(inntektsmelding -> {
-            List<Refusjonskrav> gyldigeRefusjonskrav = refusjonskravPrArbeidsgiver.getOrDefault(inntektsmelding, List.of());
-            resultater.put("gyldigeRefusjonskrav", gyldigeRefusjonskrav);
-            inntektsmelding.setGyldigeRefusjonskrav(gyldigeRefusjonskrav);
-        });
+        if (input instanceof PeriodeModellRefusjonOgNaturalytelse) {
+	        input.getEndringListeForSplitting().forEach(inntektsmelding -> {
+		        resultater.put("refusjonForArbeidsforhold", inntektsmelding.getArbeidsforhold());
+		        Set<PeriodeSplittData> refusjonPerioder = IdentifiserPerioderForRefusjon.identifiserPerioderForRefusjon((ArbeidsforholdOgInntektsmelding) inntektsmelding, resultater);
+		        refusjonPerioder.forEach(map::leggTilPeriodeÅrsak);
+	        });
 
-        input.getArbeidsforholdOgInntektsmeldinger().forEach(inntektsmelding -> {
-            resultater.put("arbeidsforhold", inntektsmelding.getArbeidsforhold());
-            Set<PeriodeSplittData> naturalYtelsePerioder = IdentifiserPerioderForNaturalytelse.identifiserPerioderForNaturalytelse(inntektsmelding, skjæringstidspunkt);
-            naturalYtelsePerioder.forEach(map::leggTilPeriodeÅrsak);
-            resultater.put("naturalYtelsePerioder", naturalYtelsePerioder);
-            Set<PeriodeSplittData> graderingPerioder = IdentifiserPerioderForGradering.identifiser(input, inntektsmelding);
-            graderingPerioder.forEach(map::leggTilPeriodeÅrsak);
-            resultater.put("graderingPerioder", graderingPerioder);
-        });
-        input.getAndelGraderinger().forEach(andelGradering -> {
-            resultater.put("graderingForAktivitetstatus", andelGradering.getAktivitetStatus());
-            Set<PeriodeSplittData> graderingPerioder = IdentifiserPerioderForGradering.identifiser(input, andelGradering);
-            graderingPerioder.forEach(map::leggTilPeriodeÅrsak);
-            resultater.put("graderingPerioder", graderingPerioder);
-        });
+	        Map<ArbeidsforholdOgInntektsmelding, List<Refusjonskrav>> refusjonskravPrArbeidsgiver = GrupperPeriodeÅrsakerPerArbeidsgiver.grupper(map.getPeriodeMap());
+	        input.getEndringListeForSplitting().forEach(endring -> {
+		        ArbeidsforholdOgInntektsmelding inntektsmelding = (ArbeidsforholdOgInntektsmelding) endring;
+		        List<Refusjonskrav> gyldigeRefusjonskrav = refusjonskravPrArbeidsgiver.getOrDefault(inntektsmelding, List.of());
+		        resultater.put("gyldigeRefusjonskrav", gyldigeRefusjonskrav);
+		        (inntektsmelding).setGyldigeRefusjonskrav(gyldigeRefusjonskrav);
+	        });
 
-        input.getEndringerISøktYtelse().forEach(endringISøktYtelse -> {
-            resultater.put("aktivitet", endringISøktYtelse.getArbeidsforhold());
-            Set<PeriodeSplittData> endringerISøktYtelse = IdentifiserPerioderForEndringISøktYtelseSvangerskapspenger.identifiser(endringISøktYtelse);
-            endringerISøktYtelse.forEach(map::leggTilPeriodeÅrsak);
-            resultater.put("endringerISøktYtelse", endringerISøktYtelse);
-        });
-
+	        input.getEndringListeForSplitting().forEach(inntektsmelding -> {
+		        resultater.put("arbeidsforhold", inntektsmelding.getArbeidsforhold());
+		        Set<PeriodeSplittData> naturalYtelsePerioder = IdentifiserPerioderForNaturalytelse.identifiserPerioderForNaturalytelse((ArbeidsforholdOgInntektsmelding) inntektsmelding, skjæringstidspunkt);
+		        naturalYtelsePerioder.forEach(map::leggTilPeriodeÅrsak);
+		        resultater.put("naturalYtelsePerioder", naturalYtelsePerioder);
+	        });
+        } else if (input instanceof PeriodeModellGradering) {
+		    input.getEndringListeForSplitting().forEach(andelGradering -> {
+			    resultater.put("graderingForAktivitetstatus", andelGradering.getAktivitetStatus());
+			    resultater.put("graderingForArbeidsforhold", andelGradering.getArbeidsforhold());
+			    Set<PeriodeSplittData> graderingPerioder = IdentifiserPerioderForGradering.identifiser(input, andelGradering);
+			    graderingPerioder.forEach(map::leggTilPeriodeÅrsak);
+			    resultater.put("graderingPerioder", graderingPerioder);
+		    });
+	    } else if (input instanceof PeriodeModellUtbetalingsgrad) {
+		    input.getEndringListeForSplitting().forEach(endringISøktYtelse -> {
+			    resultater.put("aktivitet", endringISøktYtelse.getArbeidsforhold());
+			    Set<PeriodeSplittData> endringerISøktYtelse = IdentifiserPerioderForEndringIUtbetalingsgrad.identifiser(endringISøktYtelse);
+			    endringerISøktYtelse.forEach(map::leggTilPeriodeÅrsak);
+			    resultater.put("endringerISøktYtelse", endringerISøktYtelse);
+		    });
+	    }
 
         // må alltid ha en første periode, også når ingen gradering/refusjon/naturalytelse fra start
         if (!map.getPeriodeMap().containsKey(input.getSkjæringstidspunkt())) {

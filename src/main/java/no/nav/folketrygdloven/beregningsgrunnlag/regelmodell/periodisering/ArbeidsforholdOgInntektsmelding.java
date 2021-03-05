@@ -1,5 +1,6 @@
 package no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -11,8 +12,10 @@ import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.Periode;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.grunnlag.inntekt.Arbeidsforhold;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.grunnlag.inntekt.NaturalYtelse;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.grunnlag.inntekt.Refusjonskrav;
+import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.SplittetAndel;
+import no.nav.folketrygdloven.beregningsgrunnlag.util.DateUtil;
 
-public class ArbeidsforholdOgInntektsmelding implements AndelGradering {
+public class ArbeidsforholdOgInntektsmelding implements AndelEndring {
     private Arbeidsforhold arbeidsforhold;
     private List<Refusjonskrav> refusjoner = Collections.emptyList();
     private List<Refusjonskrav> gyldigeRefusjonskrav = Collections.emptyList();
@@ -30,7 +33,70 @@ public class ArbeidsforholdOgInntektsmelding implements AndelGradering {
         return arbeidsforhold;
     }
 
-    public List<Refusjonskrav> getRefusjoner() {
+	@Override
+	public boolean filterForEksisterendeAktiviteter() {
+		return andelsnr != null;
+	}
+
+	@Override
+	public boolean filterForNyeAktiviteter(LocalDate skjæringstidspunkt, LocalDate periodeFom) {
+		return !slutterFørSkjæringstidspunkt(skjæringstidspunkt)
+		&& harRefusjonIPeriode(periodeFom);
+	}
+
+
+	private boolean harRefusjonIPeriode(LocalDate periodeFom) {
+		return getGyldigeRefusjonskrav().stream()
+				.filter(refusjonskrav -> refusjonskrav.getPeriode().inneholder(periodeFom))
+				.anyMatch(refusjonskrav -> refusjonskrav.getMånedsbeløp().compareTo(BigDecimal.ZERO) > 0);
+	}
+
+
+	@Override
+	public EksisterendeAndel mapForEksisterendeAktiviteter(LocalDate fom) {
+		Optional<BigDecimal> refusjonskravPrÅr = getGyldigeRefusjonskrav().stream()
+				.filter(refusjon -> refusjon.getPeriode().inneholder(fom))
+				.findFirst()
+				.map(refusjonskrav -> refusjonskrav.getMånedsbeløp().multiply(BigDecimal.valueOf(12)));
+		Optional<BigDecimal> naturalytelseBortfaltPrÅr = getNaturalYtelser().stream()
+				.filter(naturalYtelse -> naturalYtelse.getFom().isEqual(DateUtil.TIDENES_BEGYNNELSE))
+				.filter(naturalYtelse -> naturalYtelse.getTom().isBefore(fom))
+				.map(NaturalYtelse::getBeløp)
+				.reduce(BigDecimal::add);
+		Optional<BigDecimal> naturalytelseTilkommer = getNaturalYtelser().stream()
+				.filter(naturalYtelse -> naturalYtelse.getTom().isEqual(DateUtil.TIDENES_ENDE))
+				.filter(naturalYtelse -> naturalYtelse.getFom().isBefore(fom))
+				.map(NaturalYtelse::getBeløp)
+				.reduce(BigDecimal::add);
+		return EksisterendeAndel.builder()
+				.medAndelNr(getAndelsnr())
+				.medRefusjonskravPrÅr(refusjonskravPrÅr.orElse(null))
+				.medNaturalytelseTilkommetPrÅr(naturalytelseTilkommer.orElse(null))
+				.medNaturalytelseBortfaltPrÅr(naturalytelseBortfaltPrÅr.orElse(null))
+				.medArbeidsforhold(getArbeidsforhold())
+				.medAnvendtRefusjonskravfristHjemmel(getRefusjonskravFrist().map(RefusjonskravFrist::getAnvendtHjemmel).orElse(null))
+				.build();
+	}
+
+	@Override
+	public SplittetAndel mapForNyeAktiviteter(LocalDate periodeFom) {
+		return mapSplittetAndel(periodeFom);
+	}
+
+	private SplittetAndel mapSplittetAndel(LocalDate periodeFom) {
+		BigDecimal refusjonPrÅr = getGyldigeRefusjonskrav().stream()
+				.filter(refusjonskrav -> refusjonskrav.getPeriode().inneholder(periodeFom))
+				.map(refusjonskrav -> refusjonskrav.getMånedsbeløp().multiply(BigDecimal.valueOf(12)))
+				.findFirst().orElse(BigDecimal.ZERO);
+		SplittetAndel.Builder builder = SplittetAndel.builder()
+				.medAktivitetstatus(getAktivitetStatus())
+				.medArbeidsforhold(getArbeidsforhold())
+				.medRefusjonskravPrÅr(refusjonPrÅr)
+				.medAnvendtRefusjonskravfristHjemmel(getRefusjonskravFrist().map(RefusjonskravFrist::getAnvendtHjemmel).orElse(null));
+		return builder.build();
+	}
+
+	public List<Refusjonskrav> getRefusjoner() {
         return refusjoner;
     }
 
@@ -82,7 +148,7 @@ public class ArbeidsforholdOgInntektsmelding implements AndelGradering {
     }
 
     @Override
-    public boolean erNyAktivitet() { return andelsnr == null; }
+    public boolean erNyAktivitet(PeriodeModell input, LocalDate periodeFom) { return andelsnr == null; }
 
     public boolean slutterFørSkjæringstidspunkt(LocalDate skjæringstidspunkt) {
         return ansettelsesperiode.getTom().isBefore(skjæringstidspunkt.minusDays(1));

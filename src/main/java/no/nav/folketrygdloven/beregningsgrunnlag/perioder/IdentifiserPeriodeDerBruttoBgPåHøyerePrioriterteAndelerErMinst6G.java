@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.Periode;
-import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.AndelGradering;
+import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.AndelEndring;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.PeriodeModell;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.PeriodisertBruttoBeregningsgrunnlag;
 
@@ -15,7 +15,7 @@ class IdentifiserPeriodeDerBruttoBgPåHøyerePrioriterteAndelerErMinst6G {
 
     static Optional<LocalDate> vurder(
         PeriodeModell input,
-        AndelGradering andelGradering,
+        AndelEndring andelGradering,
         Periode gradering) {
         Optional<LocalDate> høyerePrioritertAndeler6GFomOpt = input.getPeriodisertBruttoBeregningsgrunnlagList().stream()
             .filter(periodisertBg -> periodisertBg.getPeriode().overlapper(gradering))

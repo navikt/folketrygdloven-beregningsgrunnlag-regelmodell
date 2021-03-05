@@ -11,18 +11,18 @@ import java.util.stream.Collectors;
 
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.Gradering;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.PeriodeÅrsak;
-import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.AndelGradering;
+import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.periodisering.AndelEndring;
 import no.nav.folketrygdloven.beregningsgrunnlag.regelmodell.resultat.PeriodeSplittData;
 
-public class IdentifiserPerioderForEndringISøktYtelseSvangerskapspenger {
-    private IdentifiserPerioderForEndringISøktYtelseSvangerskapspenger() {
+public class IdentifiserPerioderForEndringIUtbetalingsgrad {
+    private IdentifiserPerioderForEndringIUtbetalingsgrad() {
         // skjul public constructor
     }
 
 	// TODO: Reduser kompleksitet
-    public static Set<PeriodeSplittData> identifiser(AndelGradering endringISøktYtelse) {
+    public static Set<PeriodeSplittData> identifiser(AndelEndring endringIUtbetalingsgrad) {
         Set<PeriodeSplittData> set = new HashSet<>();
-        List<Gradering> graderinger = endringISøktYtelse.getGraderinger();
+        List<Gradering> graderinger = endringIUtbetalingsgrad.getGraderinger();
         for (int i = 0; i < graderinger.size(); i++) {
             Gradering curr = graderinger.get(i);
             if (i > 0) {
