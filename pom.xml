@@ -34,14 +34,13 @@
         <revision>2.1</revision>
         <sha1></sha1>
         <changelist>-SNAPSHOT</changelist>
-        <java.version>11</java.version>
+        <java.version>16</java.version>
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <additionalparam>-Xdoclint:none</additionalparam>
-
         <argLine>-Dfile.encoding=UTF-8</argLine>
     </properties>
 
