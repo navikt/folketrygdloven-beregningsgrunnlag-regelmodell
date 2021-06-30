@@ -160,7 +160,7 @@ public class FastsettStatusOgAndelPrPeriode extends LeafSpecification<AktivitetS
 
 	private List<AktivPeriode> hentAktivePerioderForBeregning(AktivitetStatusModell regelmodell, List<AktivPeriode> aktivePerioder) {
 		if (regelmodell instanceof AktivitetStatusModellK9) {
-			return hentAktivePerioder(justerBeregningstidspunktForK9(regelmodell.getBeregningstidspunkt()), aktivePerioder);
+			return hentAktivePerioderJustertForK9(regelmodell.getBeregningstidspunkt(), aktivePerioder);
 		}
 		return hentAktivePerioder(regelmodell.getBeregningstidspunkt(), aktivePerioder);
 	}
@@ -170,11 +170,16 @@ public class FastsettStatusOgAndelPrPeriode extends LeafSpecification<AktivitetS
 				.filter(ap -> ap.inneholder(beregningstidspunkt)).collect(Collectors.toList());
 	}
 
-	private LocalDate justerBeregningstidspunktForK9(LocalDate beregningstidspunkt) {
+	private List<AktivPeriode> hentAktivePerioderJustertForK9(LocalDate beregningstidspunkt, List<AktivPeriode> aktivePerioder) {
+		return aktivePerioder.stream()
+				.filter(ap -> ap.inneholder(beregningstidspunkt) ? true : ap.inneholder(justerBeregningstidspunktForHelg(beregningstidspunkt)))
+				.collect(Collectors.toList());
+	}
+
+	private LocalDate justerBeregningstidspunktForHelg(LocalDate beregningstidspunkt) {
 		if (beregningstidspunkt.getDayOfWeek() == DayOfWeek.SATURDAY || beregningstidspunkt.getDayOfWeek() == DayOfWeek.SUNDAY) {
 			return beregningstidspunkt.with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));
 		}
 		return beregningstidspunkt;
 	}
-
 }
