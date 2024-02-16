@@ -39,8 +39,13 @@ public class FastsettSammenligningsgrunnlagForAktivitetstatus extends LeafSpecif
 		        .orElseThrow(() -> new IllegalStateException("Fant ikke oppgitt månedsinntekt ved varig endret inntekt"));
 
         SammenligningsGrunnlag sammenligningsGrunnlag = opprettSammenligningsgrunnlag(grunnlag, oppgittInntekt);
-	    beregnOgFastsettAvvik(grunnlag, sammenligningsGrunnlag);
-	    Beregningsgrunnlag.builder(grunnlag.getBeregningsgrunnlag()).leggTilSammenligningsgrunnlagPrStatus(sammenligningsGrunnlag).build();
+        beregnOgFastsettAvvik(grunnlag, sammenligningsGrunnlag);
+
+        if(grunnlag.skalSplitteSammenligningsgrunnlagToggle()){
+            Beregningsgrunnlag.builder(grunnlag.getBeregningsgrunnlag()).medSammenligningsgrunnlagPrStatus(AktivitetStatus.SN, sammenligningsGrunnlag).build();
+        } else {
+            Beregningsgrunnlag.builder(grunnlag.getBeregningsgrunnlag()).medSammenligningsgrunnlag(sammenligningsGrunnlag).build();
+        }
 
 	    Map<String, Object> resultater = gjørRegelsporing(grunnlag, sammenligningsGrunnlag, oppgittInntekt);
         return beregnet(resultater);

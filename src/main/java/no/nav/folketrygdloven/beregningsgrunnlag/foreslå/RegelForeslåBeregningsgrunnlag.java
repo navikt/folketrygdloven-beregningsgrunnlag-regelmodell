@@ -68,11 +68,40 @@ public class RegelForeslåBeregningsgrunnlag implements EksportRegel<Beregningsg
 		if (aktivitetStatus.erAAPellerDP()) {
 			return new RegelFastsettBeregningsgrunnlagDPellerAAP().getSpecification().medEvaluationProperty(sporingsproperty);
 		}
+
+		// Fastsett alle BG per status
+		Specification<BeregningsgrunnlagPeriode> foreslåBeregningsgrunnlag;
+		if (regelmodell.skalSplitteSammenligningsgrunnlagToggle()) {
+			return switch (aktivitetStatus) {
+				case MS, SN, MIDL_INAKTIV -> new Beregnet(); // Håndteres i RegelFortsettForeslåBeregningsgrunnlag
+				case ATFL, ATFL_SN ->
+						new RegelForeslåBeregningsgrunnlagPrStatusATFLSplitt(regelmodell).getSpecification().medEvaluationProperty(sporingsproperty);
+				case KUN_YTELSE ->
+						new RegelForeslåBeregningsgrunnlagTY(regelmodell).getSpecification().medEvaluationProperty(sporingsproperty);
+				default ->
+						new RegelForeslåBeregningsgrunnlagTilNull(aktivitetStatus).getSpecification().medEvaluationProperty(sporingsproperty);
+			};
+		} else {
+			return switch (aktivitetStatus) {
+				case MS, SN, MIDL_INAKTIV -> new Beregnet(); // Håndteres i RegelFortsettForeslåBeregningsgrunnlag
+				case ATFL, ATFL_SN ->
+						new RegelBeregningsgrunnlagATFL(regelmodell).getSpecification().medEvaluationProperty(sporingsproperty);
+				case KUN_YTELSE ->
+						new RegelForeslåBeregningsgrunnlagTY(regelmodell).getSpecification().medEvaluationProperty(sporingsproperty);
+				default ->
+						new RegelForeslåBeregningsgrunnlagTilNull(aktivitetStatus).getSpecification().medEvaluationProperty(sporingsproperty);
+			};
+
+		}
+
 		return switch (aktivitetStatus) {
 			case MS, SN, MIDL_INAKTIV -> new Beregnet(); // Håndteres i RegelFortsettForeslåBeregningsgrunnlag
-			case ATFL, ATFL_SN -> new RegelBeregningsgrunnlagATFL(regelmodell).getSpecification().medEvaluationProperty(sporingsproperty);
-			case KUN_YTELSE -> new RegelForeslåBeregningsgrunnlagTY(regelmodell).getSpecification().medEvaluationProperty(sporingsproperty);
-			default -> new RegelForeslåBeregningsgrunnlagTilNull(aktivitetStatus).getSpecification().medEvaluationProperty(sporingsproperty);
+			case ATFL, ATFL_SN ->
+					new RegelBeregningsgrunnlagATFL(regelmodell).getSpecification().medEvaluationProperty(sporingsproperty);
+			case KUN_YTELSE ->
+					new RegelForeslåBeregningsgrunnlagTY(regelmodell).getSpecification().medEvaluationProperty(sporingsproperty);
+			default ->
+					new RegelForeslåBeregningsgrunnlagTilNull(aktivitetStatus).getSpecification().medEvaluationProperty(sporingsproperty);
 		};
 	}
 }

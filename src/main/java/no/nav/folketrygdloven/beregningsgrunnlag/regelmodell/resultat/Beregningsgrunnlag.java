@@ -150,6 +150,18 @@ public class Beregningsgrunnlag {
         return konstanter.getAntallGMilitærHarKravPå();
     }
 
+    public Map<AktivitetStatus, SammenligningsGrunnlag> getSammenligningsGrunnlagPrAktivitetstatus() {
+        return sammenligningsGrunnlagPrStatus;
+    }
+
+    public SammenligningsGrunnlag getSammenligningsGrunnlagPrAktivitetstatus(AktivitetStatus aktivitetStatus) {
+        return sammenligningsGrunnlagPrStatus.get(aktivitetStatus);
+    }
+
+    public boolean isSplitteATFLToggleErPå() {
+        return konstanter.isSplitteATFLToggleErPå();
+    }
+
 	public MidlertidigInaktivType getMidlertidigInaktivType() {
 		return midlertidigInaktivType;
 	}
@@ -281,6 +293,11 @@ public class Beregningsgrunnlag {
         }
 
 
+        public Builder medSplitteATFLToggleVerdi(boolean splitteATFLToggleErPå) {
+            beregningsgrunnlagMal.konstanter.setSplitteATFLToggleErPå(splitteATFLToggleErPå);
+            return this;
+        }
+
 	    public Builder medMidlertidigInaktivType(MidlertidigInaktivType midlertidigInaktivType) {
 		    beregningsgrunnlagMal.midlertidigInaktivType = midlertidigInaktivType;
 		    return this;
@@ -290,6 +307,9 @@ public class Beregningsgrunnlag {
 			beregningsgrunnlagMal.toggles.leggTilToggle(new Toggle(feature, value));
 			return this;
 		}
+
+
+
 
 	    public Beregningsgrunnlag build() {
             verifyStateForBuild();

@@ -22,13 +22,16 @@ public class Konstanter {
     private BigDecimal avviksgrenseProsent = BigDecimal.valueOf(25);
     private List<Grunnbeløp> grunnbeløpSatser = new ArrayList<>();
 
+	private boolean splitteATFLToggleErPå = false;
+
 	/**
 	 * https://jira.adeo.no/browse/TFP-5171
 	 * Bør gjøres obligatorisk når tatt i bruk i kalkulus
 	 */
 	private LocalDate fomDatoForIndividuellSammenligningATFLSN;
 
-	public void setAntallGMilitærHarKravPå(int antallGMilitærHarKravPå) {
+
+    void setAntallGMilitærHarKravPå(int antallGMilitærHarKravPå) {
         this.antallGMilitærHarKravPå = antallGMilitærHarKravPå;
     }
 
@@ -56,6 +59,10 @@ public class Konstanter {
         this.avviksgrenseProsent = avviksgrenseProsent;
     }
 
+    public void setSplitteATFLToggleErPå(boolean splitteATFLToggleErPå) {
+        this.splitteATFLToggleErPå = splitteATFLToggleErPå;
+    }
+
     public void setGrunnbeløpSatser(List<Grunnbeløp> grunnbeløpSatser) {
         this.grunnbeløpSatser = grunnbeløpSatser;
     }
@@ -79,6 +86,10 @@ public class Konstanter {
 	public BigDecimal getMidlertidigInaktivTypeAReduksjonsfaktor() {
 		return midlertidigInaktivTypeAReduksjonsfaktor;
 	}
+
+    public boolean isSplitteATFLToggleErPå() {
+        return splitteATFLToggleErPå;
+    }
 
 	public List<Grunnbeløp> getGrunnbeløpSatser() {
         if (grunnbeløpSatser.isEmpty()) {

@@ -23,6 +23,8 @@ public class SjekkOmDifferanseStørreEnn25Prosent extends LeafSpecification<Bere
 		this.aktivitetStatus = aktivitetStatus;
 	}
 
+
+
     @Override
     public Evaluation evaluate(BeregningsgrunnlagPeriode grunnlag) {
 		var type = aktivitetStatus.erSelvstendigNæringsdrivende() ? SammenligningGrunnlagType.SN : SammenligningGrunnlagType.MIDLERTIDIG_INAKTIV;
